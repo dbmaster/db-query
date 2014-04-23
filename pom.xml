@@ -8,7 +8,7 @@
     <name>Database Query</name>
     <description>Runs sql queries and updates on one or multiple servers</description>
 
-    <version>1.2.4</version>
+    <version>1.3.1</version>
     <packaging>bundle</packaging>
 
     <parent>
