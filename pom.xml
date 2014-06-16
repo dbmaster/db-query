@@ -3,6 +3,7 @@
 
     <modelVersion>4.0.0</modelVersion>
 
+    <groupId>io.dbmaster.tools</groupId>
     <artifactId>db-query</artifactId>
 
     <name>Database Query</name>
