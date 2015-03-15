@@ -5,7 +5,6 @@
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.ResultSetMetaData;
-import java.util.*
 
 import com.branegy.dbmaster.database.api.ModelService
 import com.branegy.dbmaster.model.*
@@ -84,6 +83,7 @@ dbConnections.each { connectionInfo ->
         dbm.closeResourceOnExit(connection)
         
         Statement statement = connection.createStatement();
+        dbm.closeResourceOnExit(statement)
         boolean ret = statement.execute(p_query);
         while (true){
             if (ret){
