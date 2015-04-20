@@ -1,10 +1,6 @@
-/*
- *  File Version:  $Id: query-handler.groovy 145 2013-05-22 18:10:44Z schristin $
- */
-
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.sql.ResultSetMetaData;
+import java.sql.ResultSet
+import java.sql.Statement
+import java.sql.ResultSetMetaData
 
 import com.branegy.dbmaster.database.api.ModelService
 import com.branegy.dbmaster.model.*
