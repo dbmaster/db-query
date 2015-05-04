@@ -5,7 +5,7 @@
 
     <artifactId>db-query</artifactId>
 
-    <name>Database Query</name>
+    <name>Database query</name>
     <description>Runs sql queries and updates on one or multiple servers</description>
 
     <version>1.4.1</version>
