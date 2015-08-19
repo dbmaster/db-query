@@ -1,10 +1,6 @@
-/*
- *  File Version:  $Id: query-handler.groovy 145 2013-05-22 18:10:44Z schristin $
- */
-
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.sql.ResultSetMetaData;
+import java.sql.ResultSet
+import java.sql.Statement
+import java.sql.ResultSetMetaData
 
 import com.branegy.dbmaster.database.api.ModelService
 import com.branegy.dbmaster.model.*
@@ -30,6 +26,8 @@ def printResultSet(ResultSet rs){
     ResultSetMetaData metadata = rs.getMetaData()
     int columnCount = metadata.getColumnCount()
     
+    List<Object[]> result = [];
+    
     println """<table cellspacing="0" class="simple-table" border="1"><tr style="background-color:#EEE">"""
     for (int i=1; i<=columnCount; ++i){
         println "<td>${metadata.getColumnName(i)}</td>"
@@ -41,14 +39,18 @@ def printResultSet(ResultSet rs){
     }
     
     while (rs.next()){
+        Object[] row = new Object[columnCount];   
         print "<tr>"
         for (int i=1; i<=columnCount; ++i){
-            println "<td>${ rsToString(rs.getObject(i)) }</td>"
+            row[i-1] = rsToString(rs.getObject(i))
+            println "<td>${ row[i-1] }</td>"
         }
         print "</tr>"
+        result.add(row)
     }
     
     println "</table><br/>"
+    return result
 }
 
 def printUpdateCount(int updated){
@@ -65,6 +67,7 @@ if (p_servers!=null && p_servers.size()>0) {
 }
 
 def showServerName = dbConnections.size()>1
+result = "none";
 dbConnections.each { connectionInfo ->
     try {
         def serverName = connectionInfo.getName()
@@ -87,12 +90,12 @@ dbConnections.each { connectionInfo ->
         boolean ret = statement.execute(p_query);
         while (true){
             if (ret){
-                printResultSet(statement.getResultSet());
+                result = printResultSet(statement.getResultSet())
             } else {
                 if (statement.getUpdateCount() == -1) {
                     break;
                 }
-                printUpdateCount(statement.getUpdateCount());
+                printUpdateCount(statement.getUpdateCount())
             }
             ret = statement.getMoreResults();
         }

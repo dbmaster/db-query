@@ -1,5 +1,5 @@
 <tools>
-    <tool id="db-query" title="Database::Query" projectTypes="inventory">
+    <tool id="db-query" title="Database query" projectTypes="inventory">
         <description>Runs a query or another sql statement on one or multiple servers</description>
 
         <parameters>
