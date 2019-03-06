@@ -8,8 +8,8 @@ import com.branegy.service.connection.api.ConnectionService
 import com.branegy.dbmaster.connection.ConnectionProvider
 
 import org.apache.commons.io.IOUtils
-
-import com.branegy.dbmaster.connection.JdbcConnector
+import com.branegy.dbmaster.connection.NonJdbcConnectionApiException
+import com.branegy.dbmaster.connection.JdbcDialect
 
 def rsToString(Object data){
       if (data == null) {
@@ -71,18 +71,12 @@ result = "none";
 dbConnections.each { connectionInfo ->
     try {
         def serverName = connectionInfo.getName()
-        connector = ConnectionProvider.getConnector(connectionInfo)
-        if (!(connector instanceof JdbcConnector)) {
-            logger.info("Skipping checks for connection ${serverName} as it is not a database one")
-            return
-        } else {
-            logger.info("Connecting to ${serverName}")
-        }
+        def connection = ConnectionProvider.get().getJdbcConnection(connectionInfo,p_database);
+        logger.info("Connecting to ${serverName}")
         if (showServerName){
             println "<div>Server <b>${serverName}</b></div>"
         }
         
-        connection = connector.getJdbcConnection(p_database)
         dbm.closeResourceOnExit(connection)
         
         Statement statement = connection.createStatement();
@@ -100,6 +94,9 @@ dbConnections.each { connectionInfo ->
             ret = statement.getMoreResults();
         }
         connection.commit()
+    } catch (NonJdbcConnectionApiException e) {
+        logger.info("Skipping checks for connection ${serverName} as it is not a database one")
+        return
     } catch (Exception e) {
         def msg = "Error occurred "+e.getMessage()
         org.slf4j.LoggerFactory.getLogger(this.getClass()).error(msg,e);
